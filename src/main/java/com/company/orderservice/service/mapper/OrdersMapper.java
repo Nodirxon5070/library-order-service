@@ -2,6 +2,8 @@ package com.company.orderservice.service.mapper;
 
 import com.company.orderservice.dto.OrdersBooksDto;
 import com.company.orderservice.dto.OrdersDto;
+import com.company.orderservice.dto.request.OrdersRequestDto;
+import com.company.orderservice.dto.response.OrdersResponseDto;
 import com.company.orderservice.modul.Orders;
 import org.mapstruct.*;
 
@@ -11,21 +13,14 @@ import org.mapstruct.*;
 public abstract class OrdersMapper {
 
 
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "deletedAt", ignore = true)
-    public abstract OrdersDto toDto(Orders orders);
+    public abstract OrdersResponseDto toDto(Orders orders);
 
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "deletedAt", ignore = true)
-    public abstract Orders toEntity(OrdersDto dto);
 
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "deletedAt", ignore = true)
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    public abstract void  updateOrderWithDto(OrdersDto dto,@MappingTarget Orders orders);
+    public abstract Orders toEntity(OrdersRequestDto dto);
+
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,resultType = Orders.class)
+    public abstract Orders  updateOrderWithDto(OrdersRequestDto dto,@MappingTarget Orders orders);
 
 
 }

@@ -1,9 +1,11 @@
 package com.company.orderservice.service.mapper;
 
-import com.company.orderservice.dto.OrdersBooksDto;
-import com.company.orderservice.dto.OrdersBooksDto.OrdersBooksDtoBuilder;
-import com.company.orderservice.dto.OrdersDto;
-import com.company.orderservice.dto.OrdersDto.OrdersDtoBuilder;
+import com.company.orderservice.dto.request.OrdersBooksRequestDto;
+import com.company.orderservice.dto.request.OrdersRequestDto;
+import com.company.orderservice.dto.response.OrdersBooksResponseDto;
+import com.company.orderservice.dto.response.OrdersBooksResponseDto.OrdersBooksResponseDtoBuilder;
+import com.company.orderservice.dto.response.OrdersResponseDto;
+import com.company.orderservice.dto.response.OrdersResponseDto.OrdersResponseDtoBuilder;
 import com.company.orderservice.modul.Orders;
 import com.company.orderservice.modul.OrdersBooks;
 import java.util.HashSet;
@@ -14,28 +16,28 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-10-24T15:36:10+0500",
+    date = "2023-11-09T16:58:48+0500",
     comments = "version: 1.4.2.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.3.jar, environment: Java 20.0.2 (Oracle Corporation)"
 )
 @Component
 public class OrdersBooksMapperImpl extends OrdersBooksMapper {
 
     @Override
-    public OrdersBooksDto toDto(OrdersBooks ordersBooks) {
+    public OrdersBooksResponseDto toDto(OrdersBooks ordersBooks) {
         if ( ordersBooks == null ) {
             return null;
         }
 
-        OrdersBooksDtoBuilder ordersBooksDto = OrdersBooksDto.builder();
+        OrdersBooksResponseDtoBuilder ordersBooksResponseDto = OrdersBooksResponseDto.builder();
 
-        ordersBooksDto.orderBookId( ordersBooks.getOrderBookId() );
-        ordersBooksDto.orders( ordersSetToOrdersDtoSet( ordersBooks.getOrders() ) );
+        ordersBooksResponseDto.orderBookId( ordersBooks.getOrderBookId() );
+        ordersBooksResponseDto.orders( ordersSetToOrdersResponseDtoSet( ordersBooks.getOrders() ) );
 
-        return ordersBooksDto.build();
+        return ordersBooksResponseDto.build();
     }
 
     @Override
-    public OrdersBooks toEntity(OrdersBooksDto ordersBooksDto) {
+    public OrdersBooks toEntity(OrdersBooksRequestDto ordersBooksDto) {
         if ( ordersBooksDto == null ) {
             return null;
         }
@@ -43,92 +45,94 @@ public class OrdersBooksMapperImpl extends OrdersBooksMapper {
         OrdersBooks ordersBooks = new OrdersBooks();
 
         ordersBooks.setOrderBookId( ordersBooksDto.getOrderBookId() );
-        ordersBooks.setOrders( ordersDtoSetToOrdersSet( ordersBooksDto.getOrders() ) );
+        ordersBooks.setOrders( ordersRequestDtoSetToOrdersSet( ordersBooksDto.getOrders() ) );
 
         return ordersBooks;
     }
 
     @Override
-    public void updateOrdersBooksFromDto(OrdersBooksDto dto, OrdersBooks ordersBooks) {
+    public OrdersBooks updateOrdersBooksFromDto(OrdersBooksRequestDto dto, OrdersBooks ordersBooks) {
         if ( dto == null ) {
-            return;
+            return null;
         }
 
         if ( dto.getOrderBookId() != null ) {
             ordersBooks.setOrderBookId( dto.getOrderBookId() );
         }
         if ( ordersBooks.getOrders() != null ) {
-            Set<Orders> set = ordersDtoSetToOrdersSet( dto.getOrders() );
+            Set<Orders> set = ordersRequestDtoSetToOrdersSet( dto.getOrders() );
             if ( set != null ) {
                 ordersBooks.getOrders().clear();
                 ordersBooks.getOrders().addAll( set );
             }
         }
         else {
-            Set<Orders> set = ordersDtoSetToOrdersSet( dto.getOrders() );
+            Set<Orders> set = ordersRequestDtoSetToOrdersSet( dto.getOrders() );
             if ( set != null ) {
                 ordersBooks.setOrders( set );
             }
         }
+
+        return ordersBooks;
     }
 
-    protected OrdersDto ordersToOrdersDto(Orders orders) {
+    protected OrdersResponseDto ordersToOrdersResponseDto(Orders orders) {
         if ( orders == null ) {
             return null;
         }
 
-        OrdersDtoBuilder ordersDto = OrdersDto.builder();
+        OrdersResponseDtoBuilder ordersResponseDto = OrdersResponseDto.builder();
 
-        ordersDto.orderId( orders.getOrderId() );
-        ordersDto.userId( orders.getUserId() );
-        ordersDto.total( orders.getTotal() );
-        ordersDto.ordersBooks( toDto( orders.getOrdersBooks() ) );
-        ordersDto.createdAt( orders.getCreatedAt() );
-        ordersDto.updatedAt( orders.getUpdatedAt() );
-        ordersDto.deletedAt( orders.getDeletedAt() );
+        ordersResponseDto.orderId( orders.getOrderId() );
+        ordersResponseDto.userId( orders.getUserId() );
+        ordersResponseDto.total( orders.getTotal() );
+        ordersResponseDto.ordersBooks( toDto( orders.getOrdersBooks() ) );
+        ordersResponseDto.createdAt( orders.getCreatedAt() );
+        ordersResponseDto.updatedAt( orders.getUpdatedAt() );
+        ordersResponseDto.deletedAt( orders.getDeletedAt() );
 
-        return ordersDto.build();
+        return ordersResponseDto.build();
     }
 
-    protected Set<OrdersDto> ordersSetToOrdersDtoSet(Set<Orders> set) {
+    protected Set<OrdersResponseDto> ordersSetToOrdersResponseDtoSet(Set<Orders> set) {
         if ( set == null ) {
             return null;
         }
 
-        Set<OrdersDto> set1 = new HashSet<OrdersDto>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
+        Set<OrdersResponseDto> set1 = new HashSet<OrdersResponseDto>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
         for ( Orders orders : set ) {
-            set1.add( ordersToOrdersDto( orders ) );
+            set1.add( ordersToOrdersResponseDto( orders ) );
         }
 
         return set1;
     }
 
-    protected Orders ordersDtoToOrders(OrdersDto ordersDto) {
-        if ( ordersDto == null ) {
+    protected Orders ordersRequestDtoToOrders(OrdersRequestDto ordersRequestDto) {
+        if ( ordersRequestDto == null ) {
             return null;
         }
 
         Orders orders = new Orders();
 
-        orders.setOrderId( ordersDto.getOrderId() );
-        orders.setUserId( ordersDto.getUserId() );
-        orders.setTotal( ordersDto.getTotal() );
-        orders.setOrdersBooks( toEntity( ordersDto.getOrdersBooks() ) );
-        orders.setCreatedAt( ordersDto.getCreatedAt() );
-        orders.setUpdatedAt( ordersDto.getUpdatedAt() );
-        orders.setDeletedAt( ordersDto.getDeletedAt() );
+        orders.setOrderId( ordersRequestDto.getOrderId() );
+        orders.setUserId( ordersRequestDto.getUserId() );
+        orders.setTotal( ordersRequestDto.getTotal() );
+        orders.setOrdersBooks( toEntity( ordersRequestDto.getOrdersBooks() ) );
+        orders.setCreatedAt( ordersRequestDto.getCreatedAt() );
+        orders.setUpdatedAt( ordersRequestDto.getUpdatedAt() );
+        orders.setDeletedAt( ordersRequestDto.getDeletedAt() );
 
         return orders;
     }
 
-    protected Set<Orders> ordersDtoSetToOrdersSet(Set<OrdersDto> set) {
+    protected Set<Orders> ordersRequestDtoSetToOrdersSet(Set<OrdersRequestDto> set) {
         if ( set == null ) {
             return null;
         }
 
         Set<Orders> set1 = new HashSet<Orders>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( OrdersDto ordersDto : set ) {
-            set1.add( ordersDtoToOrders( ordersDto ) );
+        for ( OrdersRequestDto ordersRequestDto : set ) {
+            set1.add( ordersRequestDtoToOrders( ordersRequestDto ) );
         }
 
         return set1;

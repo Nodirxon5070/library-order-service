@@ -1,39 +1,31 @@
 package com.company.orderservice.controller;
 
-import com.company.orderservice.dto.OrdersBooksDto;
 import com.company.orderservice.dto.ResponseDto;
 import com.company.orderservice.dto.SimpleCRUD;
+import com.company.orderservice.dto.request.OrdersBooksRequestDto;
+import com.company.orderservice.dto.request.OrdersRequestDto;
+import com.company.orderservice.dto.response.OrdersBooksResponseDto;
+import com.company.orderservice.dto.response.OrdersResponseDto;
 import com.company.orderservice.service.OrdersBooksService;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.info.Contact;
-import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.info.License;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.company.orderservice.constants.Constants.EXAMPLE_ORDERSBOOKS_NOT_FOUND;
+import static com.company.orderservice.constants.Constants.EXAMPLE_ORDERSBOOKS_SUCCESS;
+import static com.company.orderservice.constants.SimpleResponseDto.convertStatusCodeByData;
 
-@OpenAPIDefinition(
-        tags = @Tag(name = "Orders Books tag"),
-        info = @Info(
-                title = "Library Project",
-                description = "Making changes on Orders Books class",
-                contact = @Contact(
-                        name = "Library project",
-                        url = "https://t.me/xan_5070",
-                        email = "nodirxon5070@gmail.com"
-                ),
-                license = @License(name = "Orders Books License",
-                url = "https://t.me/xan_5070")
-        )
-)
+
 @RestController
 @RequestMapping(value = "ordersbooks")
-public class OrdersBooksController implements SimpleCRUD<Integer, OrdersBooksDto> {
+public class OrdersBooksController implements SimpleCRUD<Integer, OrdersBooksResponseDto, OrdersBooksRequestDto> {
 
     @Autowired
     protected OrdersBooksService ordersBooksService;
@@ -49,9 +41,42 @@ public class OrdersBooksController implements SimpleCRUD<Integer, OrdersBooksDto
                     )
             )
     )
+    @ApiResponses(value={
+            @ApiResponse(
+                    responseCode = "200",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    examples = @ExampleObject(value = EXAMPLE_ORDERSBOOKS_SUCCESS)
+                            )
+                    }
+
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    examples = @ExampleObject(value = EXAMPLE_ORDERSBOOKS_NOT_FOUND)
+                            )
+                    }
+
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    examples = @ExampleObject(value = EXAMPLE_ORDERSBOOKS_NOT_FOUND)
+                            )
+                    }
+
+            )
+
+    })
     @PostMapping(value = "/create")
-    public ResponseDto<OrdersBooksDto> create(@Valid @RequestBody OrdersBooksDto dto) {
-        return this.ordersBooksService.create(dto);
+    public ResponseEntity<ResponseDto<OrdersBooksResponseDto>> create(@Valid @RequestBody OrdersBooksRequestDto dto) {
+        return convertStatusCodeByData(this.ordersBooksService.create(dto));
     }
 
     @Override
@@ -65,9 +90,42 @@ public class OrdersBooksController implements SimpleCRUD<Integer, OrdersBooksDto
                     )
             )
     )
+    @ApiResponses(value={
+            @ApiResponse(
+                    responseCode = "200",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    examples = @ExampleObject(value = EXAMPLE_ORDERSBOOKS_SUCCESS)
+                            )
+                    }
+
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    examples = @ExampleObject(value = EXAMPLE_ORDERSBOOKS_NOT_FOUND)
+                            )
+                    }
+
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    examples = @ExampleObject(value = EXAMPLE_ORDERSBOOKS_NOT_FOUND)
+                            )
+                    }
+
+            )
+
+    })
     @GetMapping(value = "/get/{id}")
-    public ResponseDto<OrdersBooksDto> get(@PathVariable(value = "id") Integer entityId) {
-        return this.ordersBooksService.get(entityId);
+    public ResponseEntity<ResponseDto<OrdersBooksResponseDto>> get(@PathVariable(value = "id") Integer entityId) {
+        return convertStatusCodeByData(this.ordersBooksService.get(entityId));
     }
 
     @Override
@@ -81,9 +139,42 @@ public class OrdersBooksController implements SimpleCRUD<Integer, OrdersBooksDto
                     )
             )
     )
+    @ApiResponses(value={
+            @ApiResponse(
+                    responseCode = "200",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    examples = @ExampleObject(value = EXAMPLE_ORDERSBOOKS_SUCCESS)
+                            )
+                    }
+
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    examples = @ExampleObject(value = EXAMPLE_ORDERSBOOKS_NOT_FOUND)
+                            )
+                    }
+
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    examples = @ExampleObject(value = EXAMPLE_ORDERSBOOKS_NOT_FOUND)
+                            )
+                    }
+
+            )
+
+    })
     @PutMapping(value = "/update/{id}")
-    public ResponseDto<OrdersBooksDto> update(@PathVariable(value = "id") Integer entityId,@RequestBody OrdersBooksDto dto) {
-        return this.ordersBooksService.update(entityId,dto);
+    public ResponseEntity<ResponseDto<OrdersBooksResponseDto>> update(@PathVariable(value = "id") Integer entityId, @RequestBody OrdersBooksRequestDto dto) {
+        return convertStatusCodeByData(this.ordersBooksService.update(entityId,dto));
     }
 
     @Override
@@ -97,9 +188,42 @@ public class OrdersBooksController implements SimpleCRUD<Integer, OrdersBooksDto
                     )
             )
     )
+    @ApiResponses(value={
+            @ApiResponse(
+                    responseCode = "200",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    examples = @ExampleObject(value = EXAMPLE_ORDERSBOOKS_SUCCESS)
+                            )
+                    }
+
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    examples = @ExampleObject(value = EXAMPLE_ORDERSBOOKS_NOT_FOUND)
+                            )
+                    }
+
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    examples = @ExampleObject(value = EXAMPLE_ORDERSBOOKS_NOT_FOUND)
+                            )
+                    }
+
+            )
+
+    })
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseDto<OrdersBooksDto> delete(@PathVariable(value = "id") Integer entityId) {
-        return this.ordersBooksService.delete(entityId);
+    public ResponseEntity<ResponseDto<OrdersBooksResponseDto>> delete(@PathVariable(value = "id") Integer entityId) {
+        return convertStatusCodeByData(this.ordersBooksService.delete(entityId));
     }
 }
 

@@ -2,7 +2,7 @@ spring:
   profiles:
     active: dev
   application:
-    name: borrower-service
+    name: order-service
   cloud:
     config:
       uri: http://localhost:8888/
@@ -15,6 +15,7 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
     register-with-eureka: true
+    fetch-registry: true
   instance:
     preferIpAddress: true
 

@@ -1,9 +1,11 @@
 package com.company.orderservice.service.mapper;
 
-import com.company.orderservice.dto.OrdersBooksDto;
-import com.company.orderservice.dto.OrdersBooksDto.OrdersBooksDtoBuilder;
-import com.company.orderservice.dto.OrdersDto;
-import com.company.orderservice.dto.OrdersDto.OrdersDtoBuilder;
+import com.company.orderservice.dto.request.OrdersBooksRequestDto;
+import com.company.orderservice.dto.request.OrdersRequestDto;
+import com.company.orderservice.dto.response.OrdersBooksResponseDto;
+import com.company.orderservice.dto.response.OrdersBooksResponseDto.OrdersBooksResponseDtoBuilder;
+import com.company.orderservice.dto.response.OrdersResponseDto;
+import com.company.orderservice.dto.response.OrdersResponseDto.OrdersResponseDtoBuilder;
 import com.company.orderservice.modul.Orders;
 import com.company.orderservice.modul.OrdersBooks;
 import java.util.HashSet;
@@ -13,30 +15,33 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-10-19T17:50:56+0500",
+    date = "2023-11-09T16:58:48+0500",
     comments = "version: 1.4.2.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.3.jar, environment: Java 20.0.2 (Oracle Corporation)"
 )
 @Component
 public class OrdersMapperImpl extends OrdersMapper {
 
     @Override
-    public OrdersDto toDto(Orders orders) {
+    public OrdersResponseDto toDto(Orders orders) {
         if ( orders == null ) {
             return null;
         }
 
-        OrdersDtoBuilder ordersDto = OrdersDto.builder();
+        OrdersResponseDtoBuilder ordersResponseDto = OrdersResponseDto.builder();
 
-        ordersDto.orderId( orders.getOrderId() );
-        ordersDto.userId( orders.getUserId() );
-        ordersDto.total( orders.getTotal() );
-        ordersDto.ordersBooks( ordersBooksToOrdersBooksDto( orders.getOrdersBooks() ) );
+        ordersResponseDto.orderId( orders.getOrderId() );
+        ordersResponseDto.userId( orders.getUserId() );
+        ordersResponseDto.total( orders.getTotal() );
+        ordersResponseDto.ordersBooks( ordersBooksToOrdersBooksResponseDto( orders.getOrdersBooks() ) );
+        ordersResponseDto.createdAt( orders.getCreatedAt() );
+        ordersResponseDto.updatedAt( orders.getUpdatedAt() );
+        ordersResponseDto.deletedAt( orders.getDeletedAt() );
 
-        return ordersDto.build();
+        return ordersResponseDto.build();
     }
 
     @Override
-    public Orders toEntity(OrdersDto dto) {
+    public Orders toEntity(OrdersRequestDto dto) {
         if ( dto == null ) {
             return null;
         }
@@ -46,15 +51,18 @@ public class OrdersMapperImpl extends OrdersMapper {
         orders.setOrderId( dto.getOrderId() );
         orders.setUserId( dto.getUserId() );
         orders.setTotal( dto.getTotal() );
-        orders.setOrdersBooks( ordersBooksDtoToOrdersBooks( dto.getOrdersBooks() ) );
+        orders.setOrdersBooks( ordersBooksRequestDtoToOrdersBooks( dto.getOrdersBooks() ) );
+        orders.setCreatedAt( dto.getCreatedAt() );
+        orders.setUpdatedAt( dto.getUpdatedAt() );
+        orders.setDeletedAt( dto.getDeletedAt() );
 
         return orders;
     }
 
     @Override
-    public void updateOrderWithDto(OrdersDto dto, Orders orders) {
+    public Orders updateOrderWithDto(OrdersRequestDto dto, Orders orders) {
         if ( dto == null ) {
-            return;
+            return null;
         }
 
         if ( dto.getOrderId() != null ) {
@@ -70,16 +78,27 @@ public class OrdersMapperImpl extends OrdersMapper {
             if ( orders.getOrdersBooks() == null ) {
                 orders.setOrdersBooks( new OrdersBooks() );
             }
-            ordersBooksDtoToOrdersBooks1( dto.getOrdersBooks(), orders.getOrdersBooks() );
+            ordersBooksRequestDtoToOrdersBooks1( dto.getOrdersBooks(), orders.getOrdersBooks() );
         }
+        if ( dto.getCreatedAt() != null ) {
+            orders.setCreatedAt( dto.getCreatedAt() );
+        }
+        if ( dto.getUpdatedAt() != null ) {
+            orders.setUpdatedAt( dto.getUpdatedAt() );
+        }
+        if ( dto.getDeletedAt() != null ) {
+            orders.setDeletedAt( dto.getDeletedAt() );
+        }
+
+        return orders;
     }
 
-    protected Set<OrdersDto> ordersSetToOrdersDtoSet(Set<Orders> set) {
+    protected Set<OrdersResponseDto> ordersSetToOrdersResponseDtoSet(Set<Orders> set) {
         if ( set == null ) {
             return null;
         }
 
-        Set<OrdersDto> set1 = new HashSet<OrdersDto>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
+        Set<OrdersResponseDto> set1 = new HashSet<OrdersResponseDto>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
         for ( Orders orders : set ) {
             set1.add( toDto( orders ) );
         }
@@ -87,62 +106,62 @@ public class OrdersMapperImpl extends OrdersMapper {
         return set1;
     }
 
-    protected OrdersBooksDto ordersBooksToOrdersBooksDto(OrdersBooks ordersBooks) {
+    protected OrdersBooksResponseDto ordersBooksToOrdersBooksResponseDto(OrdersBooks ordersBooks) {
         if ( ordersBooks == null ) {
             return null;
         }
 
-        OrdersBooksDtoBuilder ordersBooksDto = OrdersBooksDto.builder();
+        OrdersBooksResponseDtoBuilder ordersBooksResponseDto = OrdersBooksResponseDto.builder();
 
-        ordersBooksDto.orderBookId( ordersBooks.getOrderBookId() );
-        ordersBooksDto.orders( ordersSetToOrdersDtoSet( ordersBooks.getOrders() ) );
+        ordersBooksResponseDto.orderBookId( ordersBooks.getOrderBookId() );
+        ordersBooksResponseDto.orders( ordersSetToOrdersResponseDtoSet( ordersBooks.getOrders() ) );
 
-        return ordersBooksDto.build();
+        return ordersBooksResponseDto.build();
     }
 
-    protected Set<Orders> ordersDtoSetToOrdersSet(Set<OrdersDto> set) {
+    protected Set<Orders> ordersRequestDtoSetToOrdersSet(Set<OrdersRequestDto> set) {
         if ( set == null ) {
             return null;
         }
 
         Set<Orders> set1 = new HashSet<Orders>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( OrdersDto ordersDto : set ) {
-            set1.add( toEntity( ordersDto ) );
+        for ( OrdersRequestDto ordersRequestDto : set ) {
+            set1.add( toEntity( ordersRequestDto ) );
         }
 
         return set1;
     }
 
-    protected OrdersBooks ordersBooksDtoToOrdersBooks(OrdersBooksDto ordersBooksDto) {
-        if ( ordersBooksDto == null ) {
+    protected OrdersBooks ordersBooksRequestDtoToOrdersBooks(OrdersBooksRequestDto ordersBooksRequestDto) {
+        if ( ordersBooksRequestDto == null ) {
             return null;
         }
 
         OrdersBooks ordersBooks = new OrdersBooks();
 
-        ordersBooks.setOrderBookId( ordersBooksDto.getOrderBookId() );
-        ordersBooks.setOrders( ordersDtoSetToOrdersSet( ordersBooksDto.getOrders() ) );
+        ordersBooks.setOrderBookId( ordersBooksRequestDto.getOrderBookId() );
+        ordersBooks.setOrders( ordersRequestDtoSetToOrdersSet( ordersBooksRequestDto.getOrders() ) );
 
         return ordersBooks;
     }
 
-    protected void ordersBooksDtoToOrdersBooks1(OrdersBooksDto ordersBooksDto, OrdersBooks mappingTarget) {
-        if ( ordersBooksDto == null ) {
+    protected void ordersBooksRequestDtoToOrdersBooks1(OrdersBooksRequestDto ordersBooksRequestDto, OrdersBooks mappingTarget) {
+        if ( ordersBooksRequestDto == null ) {
             return;
         }
 
-        if ( ordersBooksDto.getOrderBookId() != null ) {
-            mappingTarget.setOrderBookId( ordersBooksDto.getOrderBookId() );
+        if ( ordersBooksRequestDto.getOrderBookId() != null ) {
+            mappingTarget.setOrderBookId( ordersBooksRequestDto.getOrderBookId() );
         }
         if ( mappingTarget.getOrders() != null ) {
-            Set<Orders> set = ordersDtoSetToOrdersSet( ordersBooksDto.getOrders() );
+            Set<Orders> set = ordersRequestDtoSetToOrdersSet( ordersBooksRequestDto.getOrders() );
             if ( set != null ) {
                 mappingTarget.getOrders().clear();
                 mappingTarget.getOrders().addAll( set );
             }
         }
         else {
-            Set<Orders> set = ordersDtoSetToOrdersSet( ordersBooksDto.getOrders() );
+            Set<Orders> set = ordersRequestDtoSetToOrdersSet( ordersBooksRequestDto.getOrders() );
             if ( set != null ) {
                 mappingTarget.setOrders( set );
             }
