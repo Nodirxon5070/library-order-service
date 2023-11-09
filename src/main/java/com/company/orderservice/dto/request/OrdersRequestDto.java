@@ -12,14 +12,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrdersRequestDto {
-    private Integer orderId;
     private Integer userId;
     private Integer total;
 
     private OrdersBooksRequestDto ordersBooks;
 
-
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private LocalDateTime deletedAt;
 }

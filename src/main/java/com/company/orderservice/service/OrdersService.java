@@ -1,10 +1,7 @@
 package com.company.orderservice.service;
 
-import com.company.orderservice.dto.OrdersDto;
 import com.company.orderservice.dto.ResponseDto;
-import com.company.orderservice.dto.SimpleCRUD;
 import com.company.orderservice.dto.request.OrdersRequestDto;
-import com.company.orderservice.dto.response.OrdersBooksResponseDto;
 import com.company.orderservice.dto.response.OrdersResponseDto;
 import com.company.orderservice.modul.Orders;
 import com.company.orderservice.repository.OrdersRepository;

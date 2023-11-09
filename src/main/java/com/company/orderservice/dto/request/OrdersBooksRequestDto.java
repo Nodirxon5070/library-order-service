@@ -12,8 +12,6 @@ import java.util.Set;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrdersBooksRequestDto {
-    private Integer orderBookId;
 
-//    private Set<BooksDto> books;
     private Set<OrdersRequestDto> orders;
 }

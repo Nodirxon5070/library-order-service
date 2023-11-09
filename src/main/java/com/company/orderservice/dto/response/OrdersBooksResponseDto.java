@@ -14,6 +14,5 @@ import java.util.Set;
 public class OrdersBooksResponseDto {
     private Integer orderBookId;
 
-//    private Set<BooksDto> books;
     private Set<OrdersResponseDto> orders;
 }
